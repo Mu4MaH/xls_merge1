@@ -1,4 +1,6 @@
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +8,9 @@ import java.util.Map;
 public class Merger {
     static String fileIdInv = "c:/1.csv";
     static String fileToMerge = "c:/2.csv";
-    static String output = "%USERNAME%/output.csv";
+    static String mergeEntries = "C:\\Users\\las\\mergeentries.csv";
+    static String newEnries = "C:\\Users\\las\\newentries.csv";
+
     static Map<String, String> mapIdInv = new HashMap<String, String>();
     static Map<String, String> mapToMerge = new HashMap<String, String>();
 
@@ -42,9 +46,15 @@ public class Merger {
         * Если такого же ключа нет, то строка пишется в другой итоговый файл, который для добавления.
         *
         */
-        Map<String, String> map = new HashMap<String, String>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            System.out.println("ключ -  " + entry.getKey() + " | " + " значение " + entry.getValue());
+        FileWriter strOutMerge = new FileWriter(mergeEntries, true);
+        FileWriter strOutNew = new FileWriter(newEnries,true);
+
+        for (Map.Entry<String, String> entry : mapToMerge.entrySet()) {
+            if (mapIdInv.containsKey(entry.getKey())) {
+                strOutMerge.write(mapIdInv.get(entry.getKey()) + entry.getValue() + "\n");
+            } else {
+                strOutNew.write(entry.getValue() + "\n");
+            }
         }
 
 
